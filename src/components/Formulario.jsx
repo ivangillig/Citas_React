@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import Error from './error';
+import Error from './Error';
 
 function Formulario({ pacientes, setPacientes, paciente, setPaciente }) {
 
