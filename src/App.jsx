@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Formulario from "./components/Formulario";
 import Header from "./components/Header";
 import ListadoPacientes from "./components/ListadoPacientes";
@@ -5,13 +6,38 @@ import ListadoPacientes from "./components/ListadoPacientes";
 
 function App() {
 
+  const [pacientes, setPacientes] = useState(JSON.parse(localStorage.getItem('pacientes')) ?? []);
+  const [paciente, setPaciente] = useState({});
+
+  //Cada vez que hay un cambio en pacientes, actualizamos el localstorage
+  useEffect(() => {
+      localStorage.setItem('pacientes', JSON.stringify( pacientes ));
+  }, [pacientes])
+
+  const eliminarPaciente = id => {
+    //uso filter para crear otro arreglo descartando los ID que coincidan, usando una variable temporal "paciente"
+    const pacientesActualizados = pacientes.filter( paciente => paciente.id !== id);
+    
+    setPacientes(pacientesActualizados)
+
+  }
+
   return (
     <div className="container mx-auto mt-20">
       <Header />
 
       <div className="mt-12 md:flex">
-        <Formulario />
-        <ListadoPacientes /> 
+        <Formulario 
+            pacientes={pacientes}
+            setPacientes={setPacientes}
+            paciente={paciente}
+            setPaciente ={setPaciente}
+        />
+        <ListadoPacientes 
+            pacientes={pacientes}
+            setPaciente={setPaciente}
+            eliminarPaciente={eliminarPaciente}
+        /> 
       </div>
     </div>
   )
